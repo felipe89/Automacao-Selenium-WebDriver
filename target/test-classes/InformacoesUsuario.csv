@@ -1,3 +1,3 @@
-testAdicionarUmaInformacaoAdicionarParaUsuario,login,password,type,contact,mensagem,Duration(ms)
-"",julio0001,123456,Phone,+55117776667,Your contact has been added!,1951.0
-"",julio0001,123456,E-mail,auto@test.com.br,Your contact has been added!,1996.0
+testAdicionarUmaInformacaoAdicionarParaUsuario,login,password,type,contact,mensagem,Duration(ms),Duration(ms),Duration(ms),Duration(ms),Duration(ms)
+"",julio0001,123456,Phone,+55117776667,Your contact has been added!,11871.0,11871.0,11871.0,11871.0,11871.0
+"",julio0001,123456,E-mail,auto@test.com.br,Your contact has been added!,11908.0,11908.0,11908.0,11908.0,11908.0
