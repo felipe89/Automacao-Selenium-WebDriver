@@ -15,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.*;
+import suporte.Web;
 
 import java.beans.Visibility;
 import java.sql.Time;
@@ -29,13 +30,7 @@ public class InformacoesUsuarioTest {
 
     @Before
     public void setUp() {
-        //Abrindo o navegador
-        System.setProperty("webdriver.chrome.driver", "/home/gilmar/Documentos/drivers/chromedriver");
-        navegador = new ChromeDriver();
-        navegador.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
-        //Navegador para a pagina
-        navegador.get("http://www.juliodelima.com.br/taskit/");
+        navegador = Web.createChrome();
 
         //Clicar no link que possui o texto "Sign in"
         navegador.findElement(By.linkText("Sign in")).click();
@@ -86,6 +81,7 @@ public class InformacoesUsuarioTest {
 
 //    @Test
     public void removerUmContatoDeUsuario() {
+
         //Clicar no elemento pelo seu xpath "//span[text()='+551199996666']/following-sibling::a"
         navegador.findElement(By.xpath("//span[text()='+551199996666']/following-sibling::a")).click();
 
@@ -105,9 +101,9 @@ public class InformacoesUsuarioTest {
         navegador.findElement(By.linkText("Logout")).click();
     }
 
-    @After
+//    @After
     public void tearDown() {
         //Fechar Navegador
-//            navegador.quit();
+            navegador.quit();
     }
 }
