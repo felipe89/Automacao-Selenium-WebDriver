@@ -1,22 +1,106 @@
 package testes;
 
 import static org.junit.Assert.*;
+
+import jdk.jfr.Timespan;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.*;
+
+import java.beans.Visibility;
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
 
 public class InformacoesUsuarioTest {
 
-    @Test
-    public void testAdicionarUmaInformacaoAdicionarParaUsuario(){
+    private WebDriver navegador;
+
+    @Before
+    public void setUp() {
         //Abrindo o navegador
         System.setProperty("webdriver.chrome.driver", "/home/gilmar/Documentos/drivers/chromedriver");
-        WebDriver navegador = new ChromeDriver();
+        navegador = new ChromeDriver();
+        navegador.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         //Navegador para a pagina
-        navegador.get("http://juliodelima.com.br/taskit/");
+        navegador.get("http://www.juliodelima.com.br/taskit/");
 
-        //Validações
-        assertEquals(1, 1);
+        //Clicar no link que possui o texto "Sign in"
+        navegador.findElement(By.linkText("Sign in")).click();
+
+        //Identificar Formulario de login
+        WebElement formularioSignBox = navegador.findElement(By.id("signinbox"));
+
+        //Digitar no campo nome "login" que esta dentro do formulario
+        formularioSignBox.findElement(By.name("login")).sendKeys("julio0001");
+
+        //Digitar no campo nome "password" que esta dentro do formulario
+        formularioSignBox.findElement(By.name("password")).sendKeys("123456");
+
+        //Click no link com o texto "SIGN IN"
+        navegador.findElement(By.linkText("SIGN IN")).click();
+
+        //Click em um link que possui o nome "me"
+        navegador.findElement(By.className("me")).click();
+
+        //Click no link que possui o texto "MORE DATA ABOUT YOU"
+        navegador.findElement(By.linkText("MORE DATA ABOUT YOU")).click();
+    }
+
+    //    @Test
+    public void testAdicionarUmaInformacaoAdicionarParaUsuario() {
+
+        //Click no botão através do xpath //button[@data-target="addmoredata"]
+        navegador.findElement(By.xpath("//button[@data-target=\"addmoredata\"]")).click();
+
+        //Identificar a popup onde esta o formulario de id addmoredata
+        WebElement popUpAddMoreData = navegador.findElement(By.id("addmoredata"));
+
+        //Na combo de nome "type" escolhe a opção "Phone"
+        WebElement campoType = popUpAddMoreData.findElement(By.name("type"));
+        new Select(campoType).selectByVisibleText("Phone");
+
+        //No campo de nome "contact" digitar "+55119999999999"
+        popUpAddMoreData.findElement(By.name("contact")).sendKeys("+55119999999999");
+
+        //Click no botão "SAVE"
+        popUpAddMoreData.findElement(By.linkText("SAVE")).click();
+
+        //Na mensagem de id "toast-container" validar que o texto é "You contact has been added!"
+        WebElement mensagemPop = navegador.findElement(By.id("toast-container"));
+        String msn = mensagemPop.getText();
+        assertEquals("Your contact has been added!", msn);
+    }
+
+    @Test
+    public void removerUmContatoDeUsuario() {
+        //Clicar no elemento pelo seu xpath "//span[text()='+551199996666']/following-sibling::a"
+        navegador.findElement(By.xpath("//span[text()='+551199996666']/following-sibling::a")).click();
+
+        //Confirmar a janela javaScript
+        navegador.switchTo().alert().accept();
+
+        //Validar que a mensagem "Rest in peace, dear phone!", foi apresentada
+        WebElement mensagemPop = navegador.findElement(By.id("toast-container"));
+        String msn = mensagemPop.getText();
+        assertEquals("Rest in peace, dear phone!", msn);
+
+        //Aguardar até 10 segundos para que a janela desapareça
+        WebDriverWait aguardar = new WebDriverWait(navegador, 10);
+        aguardar.until(ExpectedConditions.stalenessOf(mensagemPop));
+
+        //Clicar no link com o texto "Logout"
+        navegador.findElement(By.linkText("Logout")).click();
+    }
+
+    @After
+    public void tearDown() {
+        //Fechar Navegador
+//            navegador.quit();
     }
 }
